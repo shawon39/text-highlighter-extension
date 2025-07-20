@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Streamlined Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand-section">
+                    <div class="brand-info">
+                        <i class="fas fa-highlighter brand-icon"></i>
+                        <h1 class="brand-title">Smart Highlighter</h1>
+                    </div>
+                    <div class="main-toggle">
+                        <label class="toggle-switch" title="Enable/Disable Highlighting">
+                            <input type="checkbox" id="enableHighlighting" checked>
+                            <span class="slider">
+                                <i class="fas fa-power-off toggle-icon"></i>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Quick Actions Bar -->
+            <div class="quick-actions-bar">
+                <div class="quick-settings">
+                    <label class="setting-toggle" title="Match exact case">
+                        <input type="checkbox" id="caseSensitive">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Case Sensitive</span>
+                    </label>
+                    <label class="setting-toggle" title="Match whole words only">
+                        <input type="checkbox" id="wholeWordsOnly">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Whole Words</span>
+                    </label>
+                </div>
+                <button id="advancedSettingsBtn" class="settings-btn" title="Advanced Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+
+            <!-- Word Lists Section -->
+            <div class="word-lists-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>Your Word Lists</h2>
+                        <span class="lists-count" id="listsCount">0 lists active</span>
+                    </div>
+                    <button id="addListBtn" class="btn-primary add-btn">
+                        <i class="fas fa-plus"></i>
+                        <span class="btn-text">New List</span>
+                    </button>
+                </div>
+                
+                <div id="wordListsContainer" class="lists-container">
+                    <!-- Word lists will be dynamically inserted here -->
+                </div>
+                
+                <!-- Enhanced Empty State -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-illustration">
+                        <div class="empty-icon-container">
+                            <i class="fas fa-highlighter empty-icon"></i>
+                            <div class="empty-sparkles">
+                                <i class="fas fa-star sparkle sparkle-1"></i>
+                                <i class="fas fa-star sparkle sparkle-2"></i>
+                                <i class="fas fa-star sparkle sparkle-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="empty-content">
+                        <h3>Ready to highlight?</h3>
+                        <p>Create your first word list using the "New List" button above to start highlighting important text on any webpage.</p>
+                        <div class="empty-features">
+                            <div class="feature-item">
+                                <i class="fas fa-palette"></i>
+                                <span>Custom colors</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-list"></i>
+                                <span>Organized lists</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-zap"></i>
+                                <span>Auto-highlight</span>
+                            </div>
+                        </div>
+                        <div class="onboarding-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Tip: Try creating a "Resume Keywords" list for job searching!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Status Bar -->
+        <div class="status-bar" id="statusBar" style="display: none;">
+            <div class="status-content">
+                <i class="fas fa-info-circle status-icon"></i>
+                <span class="status-text" id="statusText">Ready to highlight</span>
+            </div>
+        </div>
+
+        <!-- Add New List Modal -->
+        <div id="addListModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Create New Word List</h4>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label>List Name</label>
+                        <input type="text" id="newListName" placeholder="e.g., Resume Keywords, Technical Terms">
+                    </div>
+                    <div class="input-group">
+                        <label>Highlight Style</label>
+                        <div class="quick-style-selector">
+                            <button type="button" class="quick-style-btn active" data-style="default">
+                                <span class="style-sample" style="background: #ffd700; color: #333; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Golden</span>
+                            </button>
+                            <button type="button" class="quick-style-btn" data-style="important">
+                                <span class="style-sample" style="background: #ff5722; color: white; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Critical</span>
+                            </button>
+                            <button type="button" class="quick-style-btn" data-style="success">
+                                <span class="style-sample" style="background: #4caf50; color: white; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Success</span>
+                            </button>
+                            <button type="button" class="quick-style-btn" data-style="warning">
+                                <span class="style-sample" style="background: #ff9800; color: white; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Warning</span>
+                            </button>
+                            <button type="button" class="quick-style-btn" data-style="info">
+                                <span class="style-sample" style="background: #2196f3; color: white; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Info</span>
+                            </button>
+                            <button type="button" class="quick-style-btn" data-style="underline">
+                                <span class="style-sample" style="background: transparent; color: #7c3aed; text-decoration: underline; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Underline</span>
+                            </button>
+                        </div>
+                        <button type="button" id="customizeNewListStyle" class="customize-btn">
+                            Customize Style
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelListBtn" class="btn-secondary">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                    <button id="createListBtn" class="btn-primary">
+                        <i class="fas fa-check"></i>
+                        Create List
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Word Modal -->
+        <div id="addWordModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Add Words</h4>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label>Words to highlight</label>
+                        <textarea id="newWords" placeholder="Enter words separated by commas or line breaks"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelWordBtn" class="btn-secondary">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                    <button id="addWordsBtn" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Add Words
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Styles Modal -->
+        <div id="editStylesModal" class="modal">
+            <div class="modal-content modal-large">
+                <div class="modal-header">
+                    <h4>Customize Highlighting Styles</h4>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <!-- Style Preview Section -->
+                    <div class="style-preview-section">
+                        <h5>Preview</h5>
+                        <div class="preview-container">
+                            <span id="stylePreviewText" class="style-preview">Sample highlighted text</span>
+                        </div>
+                    </div>
+
+                    <!-- Style Options Grid -->
+                    <div class="style-options-grid">
+                        <!-- Background Color -->
+                        <div class="style-option">
+                            <label class="style-option-label">
+                                Background Color
+                            </label>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="editBackgroundColor" value="#ffeb3b" class="color-input">
+                                <input type="text" id="editBackgroundColorText" class="color-text-input" value="#ffeb3b" maxlength="7">
+                            </div>
+                        </div>
+
+                        <!-- Text Color -->
+                        <div class="style-option">
+                            <label class="style-option-label">
+                                Text Color
+                            </label>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="editTextColor" value="#000000" class="color-input">
+                                <input type="text" id="editTextColorText" class="color-text-input" value="#000000" maxlength="7">
+                            </div>
+                        </div>
+
+                        <!-- Font Weight -->
+                        <div class="style-option">
+                            <label class="style-option-label">
+                                Font Weight
+                            </label>
+                            <select id="editFontWeight" class="style-select">
+                                <option value="normal">Normal</option>
+                                <option value="bold">Bold</option>
+                                <option value="lighter">Lighter</option>
+                                <option value="600">Semi-bold</option>
+                                <option value="700">Bold (700)</option>
+                                <option value="800">Extra Bold</option>
+                            </select>
+                        </div>
+
+                        <!-- Font Style -->
+                        <div class="style-option">
+                            <label class="style-option-label">
+                                Font Style
+                            </label>
+                            <select id="editFontStyle" class="style-select">
+                                <option value="normal">Normal</option>
+                                <option value="italic">Italic</option>
+                                <option value="oblique">Oblique</option>
+                            </select>
+                        </div>
+
+                        <!-- Text Decoration -->
+                        <div class="style-option">
+                            <label class="style-option-label">
+                                Text Decoration
+                            </label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-option">
+                                    <input type="checkbox" id="editUnderline">
+                                    <span class="checkmark-inline"></span>
+                                    Underline
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" id="editStrikethrough">
+                                    <span class="checkmark-inline"></span>
+                                    Strikethrough
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" id="editOverline">
+                                    <span class="checkmark-inline"></span>
+                                    Overline
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Border Style -->
+                        <div class="style-option">
+                            <label class="style-option-label">
+                                Border
+                            </label>
+                            <div class="border-controls">
+                                <div class="border-input-group">
+                                    <input type="number" id="editBorderWidth" min="0" max="10" value="0" class="border-input">
+                                    <span class="input-unit">px</span>
+                                </div>
+                                <select id="editBorderStyle" class="border-select">
+                                    <option value="none">None</option>
+                                    <option value="solid">Solid</option>
+                                    <option value="dashed">Dashed</option>
+                                    <option value="dotted">Dotted</option>
+                                    <option value="double">Double</option>
+                                </select>
+                                <input type="color" id="editBorderColor" value="#000000" class="color-input-small">
+                            </div>
+                        </div>
+
+                        <!-- Text Transform -->
+                        <div class="style-option">
+                            <label class="style-option-label">
+                                Text Transform
+                            </label>
+                            <select id="editTextTransform" class="style-select">
+                                <option value="none">None</option>
+                                <option value="uppercase">UPPERCASE</option>
+                                <option value="lowercase">lowercase</option>
+                                <option value="capitalize">Capitalize Each Word</option>
+                            </select>
+                        </div>
+
+                        <!-- Padding -->
+                        <div class="style-option">
+                            <label class="style-option-label">
+                                Padding
+                            </label>
+                            <div class="padding-controls">
+                                <div class="padding-input-group">
+                                    <input type="number" id="editPaddingTop" min="0" max="20" value="1" class="padding-input">
+                                    <input type="number" id="editPaddingRight" min="0" max="20" value="2" class="padding-input">
+                                    <input type="number" id="editPaddingBottom" min="0" max="20" value="1" class="padding-input">
+                                    <input type="number" id="editPaddingLeft" min="0" max="20" value="2" class="padding-input">
+                                    <span class="input-unit">px</span>
+                                </div>
+                                <div class="padding-labels">
+                                    <span>Top</span>
+                                    <span>Right</span>
+                                    <span>Bottom</span>
+                                    <span>Left</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Border Radius -->
+                        <div class="style-option">
+                            <label class="style-option-label">
+                                Border Radius
+                            </label>
+                            <div class="radius-input-group">
+                                <input type="number" id="editBorderRadius" min="0" max="50" value="2" class="radius-input">
+                                <span class="input-unit">px</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Style Presets -->
+                    <div class="style-presets-section">
+                        <h5>Quick Presets</h5>
+                        <div class="presets-grid">
+                            <button class="preset-btn" data-preset="default">
+                                <span class="preset-sample" style="background: #ffd700; color: #333; font-weight: normal; padding: 2px 4px; border-radius: 4px;">Golden</span>
+                            </button>
+                            <button class="preset-btn" data-preset="important">
+                                <span class="preset-sample" style="background: #ff5722; color: white; font-weight: normal; padding: 2px 4px; border-radius: 4px;">Critical</span>
+                            </button>
+                            <button class="preset-btn" data-preset="success">
+                                <span class="preset-sample" style="background: #4caf50; color: white; font-weight: normal; padding: 2px 4px; border-radius: 4px;">Success</span>
+                            </button>
+                            <button class="preset-btn" data-preset="warning">
+                                <span class="preset-sample" style="background: #ff9800; color: white; font-weight: normal; padding: 2px 4px; border-radius: 4px;">Warning</span>
+                            </button>
+                            <button class="preset-btn" data-preset="info">
+                                <span class="preset-sample" style="background: #2196f3; color: white; font-weight: normal; padding: 2px 4px; border-radius: 4px;">Info</span>
+                            </button>
+                            <button class="preset-btn" data-preset="subtle">
+                                <span class="preset-sample" style="background: #f5f5f5; color: #666666; border: 1px solid #dddddd; font-weight: normal; padding: 2px 4px; border-radius: 4px;">Subtle</span>
+                            </button>
+                            <button class="preset-btn" data-preset="underline">
+                                <span class="preset-sample" style="background: transparent; color: #7c3aed; text-decoration: underline; font-weight: normal; padding: 2px 4px; border-radius: 4px;">Underline</span>
+                            </button>
+                            <button class="preset-btn" data-preset="border">
+                                <span class="preset-sample" style="background: transparent; border: 2px solid #e74c3c; color: #e74c3c; padding: 2px 4px; border-radius: 4px; font-weight: normal;">Border</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="resetStylesBtn" class="btn-secondary">
+                        Reset Styles
+                    </button>
+                    <button id="cancelEditStylesBtn" class="btn-secondary">
+                        Cancel
+                    </button>
+                    <button id="saveStylesBtn" class="btn-primary">
+                        Save Styles
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Settings Modal -->
+        <div id="advancedSettingsModal" class="modal">
+            <div class="modal-content modal-large">
+                <div class="modal-header">
+                    <h4>Advanced Settings</h4>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <!-- Website Rules Section -->
+                    <div class="settings-section">
+                        <h5 class="settings-section-title">
+                            <i class="fas fa-globe"></i>
+                            Website Rules
+                        </h5>
+                        <div class="settings-section-content">
+                            <div class="rule-option">
+                                <label class="radio-option">
+                                    <input type="radio" name="websiteRule" value="all" id="websiteRuleAll" checked>
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <strong>All websites</strong>
+                                        <span class="radio-description">Enable highlighting on all websites</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="rule-option">
+                                <label class="radio-option">
+                                    <input type="radio" name="websiteRule" value="include" id="websiteRuleInclude">
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <strong>Include specific websites</strong>
+                                        <span class="radio-description">Only enable on specified websites</span>
+                                    </div>
+                                </label>
+                                <div class="website-list-container" id="includeWebsiteContainer" style="display: none;">
+                                    <div class="website-input-group">
+                                        <input type="text" id="includeWebsiteInput" placeholder="Enter website URL (e.g., example.com)">
+                                        <button type="button" id="addIncludeWebsite" class="btn-small">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="website-list" id="includeWebsiteList"></div>
+                                </div>
+                            </div>
+                            <div class="rule-option">
+                                <label class="radio-option">
+                                    <input type="radio" name="websiteRule" value="exclude" id="websiteRuleExclude">
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <strong>Exclude specific websites</strong>
+                                        <span class="radio-description">Disable on specified websites</span>
+                                    </div>
+                                </label>
+                                <div class="website-list-container" id="excludeWebsiteContainer" style="display: none;">
+                                    <div class="website-input-group">
+                                        <input type="text" id="excludeWebsiteInput" placeholder="Enter website URL (e.g., example.com)">
+                                        <button type="button" id="addExcludeWebsite" class="btn-small">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="website-list" id="excludeWebsiteList"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Settings Section -->
+                    <div class="settings-section">
+                        <h5 class="settings-section-title">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Performance
+                        </h5>
+                        <div class="settings-section-content">
+                            <div class="setting-option">
+                                <label class="setting-toggle-advanced">
+                                    <input type="checkbox" id="enableRealTimeHighlighting" checked>
+                                    <span class="checkmark-advanced"></span>
+                                    <div class="setting-content">
+                                        <strong>Real-time highlighting</strong>
+                                        <span class="setting-description">Update highlights as you type (may impact performance)</span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="setting-option">
+                                <div class="setting-input-group">
+                                    <label class="setting-label">
+                                        <strong>Max words per page</strong>
+                                        <span class="setting-description">Limit highlighting to improve performance on large pages</span>
+                                    </label>
+                                    <div class="number-input-wrapper">
+                                        <input type="number" id="maxWordsPerPage" min="100" max="10000" step="100" value="10000">
+                                        <span class="input-unit">words</span>
+                                    </div>
+                                    <div id="currentPageStats" class="page-stats" style="display: none;">
+                                        <span class="stats-text">Current page: <span id="currentPageWordCount">-</span> words</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Display Settings Section -->
+                    <div class="settings-section">
+                        <h5 class="settings-section-title">
+                            <i class="fas fa-eye"></i>
+                            Display
+                        </h5>
+                        <div class="settings-section-content">
+                            <div class="setting-option">
+                                <label class="setting-toggle-advanced">
+                                    <input type="checkbox" id="showWordCount" checked>
+                                    <span class="checkmark-advanced"></span>
+                                    <div class="setting-content">
+                                        <strong>Show word counts</strong>
+                                        <span class="setting-description">Display count of highlighted words in popup</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="setting-option">
+                                <label class="setting-toggle-advanced">
+                                    <input type="checkbox" id="highlightOnPageLoad" checked>
+                                    <span class="checkmark-advanced"></span>
+                                    <div class="setting-content">
+                                        <strong>Auto-highlight on page load</strong>
+                                        <span class="setting-description">Automatically highlight words when page loads</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="setting-option">
+                                <div class="setting-input-group">
+                                    <label class="setting-label">
+                                        <strong>Highlight animation</strong>
+                                        <span class="setting-description">Animation speed for new highlights</span>
+                                    </label>
+                                    <select id="highlightAnimation" class="setting-select">
+                                        <option value="none">None</option>
+                                        <option value="fast">Fast (0.2s)</option>
+                                        <option value="normal" selected>Normal (0.3s)</option>
+                                        <option value="slow">Slow (0.5s)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Keyboard Shortcuts Section -->
+                    <div class="settings-section">
+                        <h5 class="settings-section-title">
+                            <i class="fas fa-keyboard"></i>
+                            Keyboard Shortcuts
+                        </h5>
+                        <div class="settings-section-content">
+                            <div class="shortcut-list">
+                                <div class="shortcut-item">
+                                    <span class="shortcut-action">Toggle highlighting</span>
+                                    <kbd class="shortcut-key">Ctrl + Shift + H</kbd>
+                                </div>
+                                <div class="shortcut-item">
+                                    <span class="shortcut-action">Clear all highlights</span>
+                                    <kbd class="shortcut-key">Ctrl + Shift + C</kbd>
+                                </div>
+                                <div class="shortcut-item">
+                                    <span class="shortcut-action">Refresh highlights</span>
+                                    <kbd class="shortcut-key">Ctrl + Shift + R</kbd>
+                                </div>
+                            </div>
+                            <div class="setting-option">
+                                <label class="setting-toggle-advanced">
+                                    <input type="checkbox" id="enableKeyboardShortcuts" checked>
+                                    <span class="checkmark-advanced"></span>
+                                    <div class="setting-content">
+                                        <strong>Enable keyboard shortcuts</strong>
+                                        <span class="setting-description">Allow keyboard shortcuts for quick actions</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Management Section -->
+                    <div class="settings-section">
+                        <h5 class="settings-section-title">
+                            <i class="fas fa-database"></i>
+                            Data Management
+                        </h5>
+                        <div class="settings-section-content">
+                            <div class="data-actions">
+                                <button id="exportSettingsBtn" class="btn-secondary">
+                                    <i class="fas fa-download"></i>
+                                    Export Settings
+                                </button>
+                                <button id="importSettingsBtn" class="btn-secondary">
+                                    <i class="fas fa-upload"></i>
+                                    Import Settings
+                                </button>
+                                <button id="resetAllSettingsBtn" class="btn-secondary danger">
+                                    <i class="fas fa-trash"></i>
+                                    Delete Everything (Factory Reset)
+                                </button>
+                            </div>
+                            <input type="file" id="importFileInput" accept=".json" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="resetAdvancedBtn" class="btn-secondary">
+                        Reset Advanced Settings Only
+                    </button>
+                    <button id="closeAdvancedBtn" class="btn-primary">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html> 
