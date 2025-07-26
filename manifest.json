@@ -18,7 +18,12 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"],
+      "js": [
+        "js/content/highlighter-core.js",
+        "js/content/dom-manager.js", 
+        "js/content/settings-handler.js",
+        "js/content/content-main.js"
+      ],
       "run_at": "document_end"
     }
   ],

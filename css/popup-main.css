@@ -1,0 +1,19 @@
+/* 
+ * Main Popup CSS - Imports all modular CSS files
+ * This replaces the original popup.css
+ */
+
+/* Base styles and layout foundation */
+@import url('./base/base.css');
+
+/* Component styles */
+@import url('./components/header.css');
+@import url('./components/word-lists.css');
+@import url('./components/modals.css');
+@import url('./components/forms.css');
+
+/* Style editor interface */
+@import url('./styles/style-editor.css');
+
+/* Advanced settings */
+@import url('./advanced/advanced-settings.css');

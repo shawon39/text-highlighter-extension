@@ -1,0 +1,383 @@
+/* Advanced Settings Modal Styles */
+
+.settings-section {
+    margin-bottom: 24px;
+    border: 1px solid #e8eaed;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.settings-section:last-child {
+    margin-bottom: 0;
+}
+
+.settings-section-title {
+    background: #f8f9fa;
+    padding: 12px 16px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #e8eaed;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.settings-section-title i {
+    color: #6b46c1;
+    font-size: 16px;
+}
+
+.settings-section-content {
+    padding: 16px;
+}
+
+/* Radio Options for Website Rules */
+.rule-option {
+    margin-bottom: 16px;
+}
+
+.rule-option:last-child {
+    margin-bottom: 0;
+}
+
+.radio-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.radio-option:hover {
+    background: #f8f9fa;
+}
+
+.radio-option input[type="radio"] {
+    display: none;
+}
+
+.radio-checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.radio-option input[type="radio"]:checked + .radio-checkmark {
+    border-color: #6b46c1;
+    background: #6b46c1;
+}
+
+.radio-option input[type="radio"]:checked + .radio-checkmark:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+}
+
+.radio-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.radio-content strong {
+    font-weight: 600;
+    color: #333;
+}
+
+.radio-description {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Website List Containers */
+.website-list-container {
+    margin-top: 12px;
+    margin-left: 32px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e8eaed;
+}
+
+.website-input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.website-input-group input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.website-input-group input:focus {
+    outline: none;
+    border-color: #6b46c1;
+    box-shadow: 0 0 0 2px rgba(107, 70, 193, 0.1);
+}
+
+.website-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.website-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid #e8eaed;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.website-item-url {
+    flex: 1;
+    color: #333;
+    font-family: monospace;
+}
+
+.website-item-remove {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+.website-item-remove:hover {
+    background: #fee;
+    color: #d32f2f;
+}
+
+/* Advanced Setting Options */
+.setting-option {
+    margin-bottom: 16px;
+}
+
+.setting-option:last-child {
+    margin-bottom: 0;
+}
+
+.setting-toggle-advanced {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.setting-toggle-advanced:hover {
+    background: #f8f9fa;
+}
+
+.setting-toggle-advanced input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark-advanced {
+    width: 18px;
+    height: 18px;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.setting-toggle-advanced input[type="checkbox"]:checked + .checkmark-advanced {
+    background: #6b46c1;
+    border-color: #6b46c1;
+}
+
+.setting-toggle-advanced input[type="checkbox"]:checked + .checkmark-advanced:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.setting-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.setting-content strong {
+    font-weight: 600;
+    color: #333;
+}
+
+.setting-description {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Setting Input Groups */
+.setting-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.setting-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.setting-label strong {
+    font-weight: 600;
+    color: #333;
+}
+
+.number-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.number-input-wrapper input {
+    width: 100px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.number-input-wrapper input:focus {
+    outline: none;
+    border-color: #6b46c1;
+    box-shadow: 0 0 0 2px rgba(107, 70, 193, 0.1);
+}
+
+.setting-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    background: white;
+    cursor: pointer;
+}
+
+.setting-select:focus {
+    outline: none;
+    border-color: #6b46c1;
+    box-shadow: 0 0 0 2px rgba(107, 70, 193, 0.1);
+}
+
+/* Page Statistics */
+.page-stats {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #e3f2fd;
+    border-radius: 4px;
+    border-left: 3px solid #2196f3;
+}
+
+.stats-text {
+    font-size: 12px;
+    color: #1565c0;
+    font-weight: 500;
+}
+
+/* Keyboard Shortcuts */
+.shortcut-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+
+.shortcut-action {
+    color: #333;
+    font-weight: 500;
+}
+
+.shortcut-key {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: monospace;
+    font-size: 11px;
+    color: #666;
+}
+
+/* Data Management Actions */
+.data-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Auto-save indicator styles are handled inline for better control */
+
+/* Responsive adjustments for advanced settings */
+@media (max-width: 768px) {
+    .website-list-container {
+        margin-left: 16px;
+        padding: 12px;
+    }
+    
+    .website-input-group {
+        flex-direction: column;
+    }
+    
+    .data-actions {
+        flex-direction: column;
+    }
+    
+    .data-actions button {
+        width: 100%;
+    }
+    
+    .shortcut-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+}

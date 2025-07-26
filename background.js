@@ -12,6 +12,8 @@ class BackgroundService {
         chrome.runtime.onInstalled.addListener((details) => {
             if (details.reason === 'install') {
                 this.setDefaultSettings();
+            } else if (details.reason === 'update') {
+                this.checkAndUpdateSettings();
             }
         });
     }
@@ -21,16 +23,62 @@ class BackgroundService {
             enableHighlighting: true,
             caseSensitive: false,
             wholeWordsOnly: false,
-            wordLists: []
+            wordLists: [],
+            websiteRule: 'all',
+            includeWebsites: [],
+            excludeWebsites: [],
+            maxWordsPerPage: 10000,
+            showWordCount: true,
+            highlightAnimation: 'normal',
+            enableKeyboardShortcuts: true
         };
 
-        await chrome.storage.sync.set(defaultSettings);
+        try {
+            await chrome.storage.sync.set(defaultSettings);
+        } catch (error) {
+            // Silent error handling
+        }
+    }
+    
+    async checkAndUpdateSettings() {
+        try {
+            const currentSettings = await chrome.storage.sync.get(null);
+            
+            const requiredSettings = {
+                enableHighlighting: true,
+                caseSensitive: false,
+                wholeWordsOnly: false,
+                wordLists: [],
+                websiteRule: 'all',
+                includeWebsites: [],
+                excludeWebsites: [],
+                maxWordsPerPage: 10000,
+                showWordCount: true,
+                highlightAnimation: 'normal',
+                enableKeyboardShortcuts: true
+            };
+            
+            const newSettings = {};
+            let hasUpdates = false;
+            
+            for (const [key, defaultValue] of Object.entries(requiredSettings)) {
+                if (!(key in currentSettings)) {
+                    newSettings[key] = defaultValue;
+                    hasUpdates = true;
+                }
+            }
+            
+            if (hasUpdates) {
+                await chrome.storage.sync.set(newSettings);
+            }
+        } catch (error) {
+            // Silent error handling
+        }
     }
 
     setupStorageListener() {
         chrome.storage.onChanged.addListener((changes, areaName) => {
             if (areaName === 'sync') {
-                // Notify all content scripts about storage changes
                 this.notifyAllTabs();
             }
         });
@@ -47,7 +95,7 @@ class BackgroundService {
             });
             await Promise.all(promises);
         } catch (error) {
-            console.error('Error notifying tabs:', error);
+            // Silent error handling
         }
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="css/popup-main.css">
 </head>
 <body>
     <div class="container">
@@ -467,17 +467,6 @@
                         </h5>
                         <div class="settings-section-content">
                             <div class="setting-option">
-                                <label class="setting-toggle-advanced">
-                                    <input type="checkbox" id="enableRealTimeHighlighting" checked>
-                                    <span class="checkmark-advanced"></span>
-                                    <div class="setting-content">
-                                        <strong>Real-time highlighting</strong>
-                                        <span class="setting-description">Update highlights as you type (may impact performance)</span>
-                                    </div>
-                                </label>
-                            </div>
-
-                            <div class="setting-option">
                                 <div class="setting-input-group">
                                     <label class="setting-label">
                                         <strong>Max words per page</strong>
@@ -513,16 +502,6 @@
                                 </label>
                             </div>
                             <div class="setting-option">
-                                <label class="setting-toggle-advanced">
-                                    <input type="checkbox" id="highlightOnPageLoad" checked>
-                                    <span class="checkmark-advanced"></span>
-                                    <div class="setting-content">
-                                        <strong>Auto-highlight on page load</strong>
-                                        <span class="setting-description">Automatically highlight words when page loads</span>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="setting-option">
                                 <div class="setting-input-group">
                                     <label class="setting-label">
                                         <strong>Highlight animation</strong>
@@ -550,14 +529,6 @@
                                 <div class="shortcut-item">
                                     <span class="shortcut-action">Toggle highlighting</span>
                                     <kbd class="shortcut-key">Ctrl + Shift + H</kbd>
-                                </div>
-                                <div class="shortcut-item">
-                                    <span class="shortcut-action">Clear all highlights</span>
-                                    <kbd class="shortcut-key">Ctrl + Shift + C</kbd>
-                                </div>
-                                <div class="shortcut-item">
-                                    <span class="shortcut-action">Refresh highlights</span>
-                                    <kbd class="shortcut-key">Ctrl + Shift + R</kbd>
                                 </div>
                             </div>
                             <div class="setting-option">
@@ -610,6 +581,12 @@
         </div>
     </div>
 
-    <script src="popup.js"></script>
+    <!-- Load modular JavaScript files -->
+    <script src="js/storage/storage-manager.js"></script>
+    <script src="js/styles/style-manager.js"></script>
+    <script src="js/ui/modal-manager.js"></script>
+    <script src="js/ui/word-list-renderer.js"></script>
+    <script src="js/settings/advanced-settings.js"></script>
+    <script src="js/core/popup-core.js"></script>
 </body>
 </html> 
