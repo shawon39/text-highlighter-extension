@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Smart Text Highlighter",
-  "version": "1.0",
+  "name": "Keyword List Highlighter",
+  "version": "2.0.0",
   "description": "Automatically highlight specified words with customizable colors and word lists",
   "permissions": [
     "storage",
@@ -29,7 +29,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Smart Text Highlighter",
+    "default_title": "Keyword List Highlighter",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",

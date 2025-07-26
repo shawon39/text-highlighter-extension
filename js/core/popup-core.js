@@ -87,6 +87,14 @@ class TextHighlighterPopup {
             this.advancedSettingsManager.hideAdvancedSettingsModal();
         });
 
+        // Close advanced settings modal via X button
+        const advancedModalCloseBtn = document.querySelector('#advancedSettingsModal .close');
+        if (advancedModalCloseBtn) {
+            advancedModalCloseBtn.addEventListener('click', () => {
+                this.advancedSettingsManager.hideAdvancedSettingsModal();
+            });
+        }
+
         // Reset advanced settings button
         document.getElementById('resetAdvancedBtn').addEventListener('click', () => {
             this.advancedSettingsManager.resetAdvancedSettings();

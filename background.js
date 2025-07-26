@@ -6,6 +6,7 @@ class BackgroundService {
     init() {
         this.setupInstallListener();
         this.setupStorageListener();
+        this.setupBadge();
     }
 
     setupInstallListener() {
@@ -80,8 +81,34 @@ class BackgroundService {
         chrome.storage.onChanged.addListener((changes, areaName) => {
             if (areaName === 'sync') {
                 this.notifyAllTabs();
+                if (changes.enableHighlighting) {
+                    this.updateBadge(changes.enableHighlighting.newValue);
+                }
             }
         });
+    }
+
+    async setupBadge() {
+        try {
+            const settings = await chrome.storage.sync.get(['enableHighlighting']);
+            const isEnabled = settings.enableHighlighting !== false;
+            this.updateBadge(isEnabled);
+        } catch (error) {
+            // Silent error handling
+        }
+    }
+
+    updateBadge(isEnabled) {
+        try {
+            if (isEnabled) {
+                chrome.action.setBadgeText({ text: 'ON' });
+                chrome.action.setBadgeBackgroundColor({ color: '#4CAF50' });
+            } else {
+                chrome.action.setBadgeText({ text: '' });
+            }
+        } catch (error) {
+            // Silent error handling
+        }
     }
 
     async notifyAllTabs() {
