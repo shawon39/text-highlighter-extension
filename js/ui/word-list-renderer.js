@@ -29,13 +29,13 @@ class WordListRenderer {
         const enabledLists = wordLists.filter(list => list.enabled !== false).length;
         
         if (wordLists.length === 0) {
-            listsCount.textContent = '0 lists active';
+            listsCount.textContent = '0 active';
             container.style.display = 'none';
             emptyState.style.display = 'flex';
             if (this.onStatusUpdate) this.onStatusUpdate('Create your first word list to get started', 'info');
             return;
         } else {
-            listsCount.textContent = `${enabledLists} of ${wordLists.length} lists active`;
+            listsCount.textContent = `${enabledLists} of ${wordLists.length} active`;
         }
 
         container.style.display = 'block';
@@ -98,6 +98,14 @@ class WordListRenderer {
             </div>
         ` : '';
 
+        // Search input - only show if there are words in the list
+        const searchInputHtml = totalCount > 0 ? `
+            <div class="word-search-container">
+                <input type="text" class="word-search-input" placeholder="Search words..." data-list-id="${list.id}">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+        ` : '';
+
         return `
             <div class="word-list" data-list-id="${list.id}" data-enabled="${isEnabled}">
                 <div class="word-list-header" data-list-id="${list.id}">
@@ -120,6 +128,7 @@ class WordListRenderer {
                 <div class="word-list-body">
                     <div class="list-controls">
                         ${checkAllHtml}
+                        ${searchInputHtml}
                         <button class="btn-small add-words" data-list-id="${list.id}">
                             <i class="fas fa-plus"></i>
                             Add Words
@@ -202,6 +211,62 @@ class WordListRenderer {
                 }
             });
         });
+
+        // Search functionality
+        document.querySelectorAll('.word-search-input').forEach(input => {
+            input.addEventListener('input', (e) => {
+                const listId = input.dataset.listId;
+                const searchTerm = e.target.value.toLowerCase().trim();
+                this.filterWords(listId, searchTerm);
+            });
+        });
+    }
+
+    filterWords(listId, searchTerm) {
+        const wordList = document.querySelector(`.word-list[data-list-id="${listId}"]`);
+        if (!wordList) return;
+
+        const wordItems = wordList.querySelectorAll('.word-item');
+        let visibleCount = 0;
+
+        wordItems.forEach(wordItem => {
+            const label = wordItem.querySelector('.word-checkbox label');
+            if (!label) return;
+
+            const wordText = label.textContent.toLowerCase();
+            const isVisible = searchTerm === '' || wordText.includes(searchTerm);
+            
+            wordItem.style.display = isVisible ? 'flex' : 'none';
+            if (isVisible) visibleCount++;
+        });
+
+        // Show/hide "no results" message
+        this.updateNoResultsMessage(listId, visibleCount, searchTerm);
+    }
+
+    updateNoResultsMessage(listId, visibleCount, searchTerm) {
+        const wordList = document.querySelector(`.word-list[data-list-id="${listId}"]`);
+        if (!wordList) return;
+
+        const wordsContainer = wordList.querySelector('.words-container');
+        let noResultsMsg = wordsContainer.querySelector('.no-search-results');
+
+        if (visibleCount === 0 && searchTerm !== '') {
+            // Show "no results" message
+            if (!noResultsMsg) {
+                noResultsMsg = document.createElement('div');
+                noResultsMsg.className = 'no-search-results';
+                noResultsMsg.style.cssText = 'color: #999; font-size: 12px; text-align: center; padding: 20px; font-style: italic;';
+                wordsContainer.appendChild(noResultsMsg);
+            }
+            noResultsMsg.textContent = `No words found matching "${searchTerm}"`;
+            noResultsMsg.style.display = 'block';
+        } else {
+            // Hide "no results" message
+            if (noResultsMsg) {
+                noResultsMsg.style.display = 'none';
+            }
+        }
     }
 
     toggleListExpansion(listId) {
@@ -336,7 +401,7 @@ class WordListRenderer {
 
         // Update lists count
         const enabledLists = wordLists.filter(list => list.enabled !== false).length;
-        listsCount.textContent = `${wordLists.length} list${wordLists.length !== 1 ? 's' : ''}${enabledLists !== wordLists.length ? ` (${enabledLists} enabled)` : ''}`;
+        listsCount.textContent = `${enabledLists} of ${wordLists.length} active`;
 
         if (wordLists.length === 0) {
             container.style.display = 'none';

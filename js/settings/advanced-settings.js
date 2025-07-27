@@ -11,11 +11,21 @@ class AdvancedSettingsManager {
     async showAdvancedSettingsModal() {
         await this.loadAdvancedSettings();
         this.bindAdvancedSettingsEvents();
-        document.getElementById('advancedSettingsModal').style.display = 'block';
+        const modal = document.getElementById('advancedSettingsModal');
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
     }
 
     hideAdvancedSettingsModal() {
-        document.getElementById('advancedSettingsModal').style.display = 'none';
+        const modal = document.getElementById('advancedSettingsModal');
+        
+        // Move focus away from modal before hiding it
+        if (modal.contains(document.activeElement)) {
+            document.getElementById('advancedSettingsBtn').focus();
+        }
+        
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
         this.unbindAdvancedSettingsEvents();
     }
 

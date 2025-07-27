@@ -7,6 +7,9 @@
 </head>
 <body>
     <div class="container">
+        <!-- Skip link for keyboard navigation -->
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+        
         <!-- Streamlined Header -->
         <header class="header">
             <div class="header-content">
@@ -17,51 +20,56 @@
                     </div>
                     <div class="main-toggle">
                         <label class="toggle-switch" title="Enable/Disable Highlighting">
-                            <input type="checkbox" id="enableHighlighting" checked>
+                            <input type="checkbox" id="enableHighlighting" checked aria-label="Enable or disable text highlighting" aria-describedby="toggle-description">
                             <span class="slider">
                                 <i class="fas fa-power-off toggle-icon"></i>
                             </span>
                         </label>
+                        <span id="toggle-description" class="sr-only">Toggle highlighting functionality on or off for all web pages</span>
                     </div>
                 </div>
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" id="main-content">
             <!-- Quick Actions Bar -->
             <div class="quick-actions-bar">
-                <div class="quick-settings">
+                <div class="quick-settings" role="group" aria-label="Highlighting options">
                     <label class="setting-toggle" title="Match exact case">
-                        <input type="checkbox" id="caseSensitive">
+                        <input type="checkbox" id="caseSensitive" aria-label="Case sensitive matching" aria-describedby="case-description">
                         <span class="checkmark"></span>
                         <span class="label-text">Case Sensitive</span>
                     </label>
+                    <span id="case-description" class="sr-only">When enabled, "Word" and "word" will be treated as different</span>
                     <label class="setting-toggle" title="Match whole words only">
-                        <input type="checkbox" id="wholeWordsOnly">
+                        <input type="checkbox" id="wholeWordsOnly" aria-label="Whole words only" aria-describedby="whole-words-description">
                         <span class="checkmark"></span>
                         <span class="label-text">Whole Words</span>
                     </label>
+                    <span id="whole-words-description" class="sr-only">When enabled, only complete words will be highlighted, not partial matches</span>
                 </div>
-                <button id="advancedSettingsBtn" class="settings-btn" title="Advanced Settings">
-                    <i class="fas fa-cog"></i>
+                <button id="advancedSettingsBtn" class="settings-btn" title="Advanced Settings" aria-label="Open advanced settings" aria-describedby="settings-description">
+                    <i class="fas fa-cog" aria-hidden="true"></i>
                 </button>
+                <span id="settings-description" class="sr-only">Open advanced settings for website rules, performance, and data management</span>
             </div>
 
             <!-- Word Lists Section -->
             <div class="word-lists-section">
                 <div class="section-header">
                     <div class="section-title">
-                        <h2>Your Word Lists</h2>
-                        <span class="lists-count" id="listsCount">0 lists active</span>
+                        <h2>Lists</h2>
+                        <span class="lists-count" id="listsCount" aria-live="polite">0 active</span>
                     </div>
-                    <button id="addListBtn" class="btn-primary add-btn">
-                        <i class="fas fa-plus"></i>
-                        <span class="btn-text">New List</span>
+                    <button id="addListBtn" class="btn-primary add-btn" aria-label="Create new word list" aria-describedby="add-list-description">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                        <span class="btn-text">New</span>
                     </button>
+                    <span id="add-list-description" class="sr-only">Create a new list of words to highlight with custom colors</span>
                 </div>
                 
-                <div id="wordListsContainer" class="lists-container">
+                <div id="wordListsContainer" class="lists-container" role="list" aria-label="Word lists">
                     <!-- Word lists will be dynamically inserted here -->
                 </div>
                 
@@ -104,59 +112,65 @@
         </main>
 
         <!-- Status Bar -->
-        <div class="status-bar" id="statusBar" style="display: none;">
+        <div class="status-bar" id="statusBar" style="display: none;" role="status" aria-live="polite">
             <div class="status-content">
-                <i class="fas fa-info-circle status-icon"></i>
+                <i class="fas fa-info-circle status-icon" aria-hidden="true"></i>
                 <span class="status-text" id="statusText">Ready to highlight</span>
             </div>
         </div>
 
+        <!-- Screen reader announcements -->
+        <div id="announcements" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
         <!-- Add New List Modal -->
-        <div id="addListModal" class="modal">
+        <div id="addListModal" class="modal" role="dialog" aria-labelledby="addListModalTitle" aria-describedby="addListModalDesc" aria-hidden="true">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Create New Word List</h4>
-                    <span class="close">&times;</span>
+                    <h4 id="addListModalTitle">Create New Word List</h4>
+                    <button class="close" aria-label="Close modal">&times;</button>
                 </div>
+                <div id="addListModalDesc" class="sr-only">Create a new list of words to highlight with custom colors and styling</div>
                 <div class="modal-body">
                     <div class="input-group">
-                        <label>List Name</label>
-                        <input type="text" id="newListName" placeholder="e.g., Resume Keywords, Technical Terms">
+                        <label for="newListName">List Name</label>
+                        <input type="text" id="newListName" placeholder="e.g., Resume Keywords, Technical Terms" aria-describedby="list-name-help" required>
+                        <span id="list-name-help" class="sr-only">Enter a descriptive name for your word list</span>
                     </div>
                     <div class="input-group">
-                        <label>Highlight Style</label>
-                        <div class="quick-style-selector">
-                            <button type="button" class="quick-style-btn active" data-style="default">
+                        <label id="highlight-style-label">Highlight Style</label>
+                        <div class="quick-style-selector" role="radiogroup" aria-labelledby="highlight-style-label" aria-describedby="style-help">
+                            <button type="button" class="quick-style-btn active" data-style="default" role="radio" aria-checked="true" aria-label="Golden highlight style">
                                 <span class="style-sample" style="background: #ffd700; color: #333; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Golden</span>
                             </button>
-                            <button type="button" class="quick-style-btn" data-style="important">
+                            <button type="button" class="quick-style-btn" data-style="important" role="radio" aria-checked="false" aria-label="Critical red highlight style">
                                 <span class="style-sample" style="background: #ff5722; color: white; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Critical</span>
                             </button>
-                            <button type="button" class="quick-style-btn" data-style="success">
+                            <button type="button" class="quick-style-btn" data-style="success" role="radio" aria-checked="false" aria-label="Success green highlight style">
                                 <span class="style-sample" style="background: #4caf50; color: white; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Success</span>
                             </button>
-                            <button type="button" class="quick-style-btn" data-style="warning">
+                            <button type="button" class="quick-style-btn" data-style="warning" role="radio" aria-checked="false" aria-label="Warning orange highlight style">
                                 <span class="style-sample" style="background: #ff9800; color: white; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Warning</span>
                             </button>
-                            <button type="button" class="quick-style-btn" data-style="info">
+                            <button type="button" class="quick-style-btn" data-style="info" role="radio" aria-checked="false" aria-label="Info blue highlight style">
                                 <span class="style-sample" style="background: #2196f3; color: white; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Info</span>
                             </button>
-                            <button type="button" class="quick-style-btn" data-style="underline">
+                            <button type="button" class="quick-style-btn" data-style="underline" role="radio" aria-checked="false" aria-label="Underline purple highlight style">
                                 <span class="style-sample" style="background: transparent; color: #7c3aed; text-decoration: underline; font-weight: normal; padding: 2px 4px; border-radius: 6px;">Underline</span>
                             </button>
                         </div>
+                        <span id="style-help" class="sr-only">Choose a color and style for highlighting words in this list</span>
                         <button type="button" id="customizeNewListStyle" class="customize-btn">
                             Customize Style
                         </button>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="cancelListBtn" class="btn-secondary">
-                        <i class="fas fa-times"></i>
+                    <button id="cancelListBtn" class="btn-secondary" aria-label="Cancel creating new list">
+                        <i class="fas fa-times" aria-hidden="true"></i>
                         Cancel
                     </button>
-                    <button id="createListBtn" class="btn-primary">
-                        <i class="fas fa-check"></i>
+                    <button id="createListBtn" class="btn-primary" aria-label="Create new word list">
+                        <i class="fas fa-check" aria-hidden="true"></i>
                         Create List
                     </button>
                 </div>
@@ -164,25 +178,26 @@
         </div>
 
         <!-- Add Word Modal -->
-        <div id="addWordModal" class="modal">
+        <div id="addWordModal" class="modal" role="dialog" aria-labelledby="addWordModalTitle" aria-hidden="true">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Add Words</h4>
-                    <span class="close">&times;</span>
+                    <h4 id="addWordModalTitle">Add Words</h4>
+                    <button class="close" aria-label="Close modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="input-group">
-                        <label>Words to highlight</label>
-                        <textarea id="newWords" placeholder="Enter words separated by commas or line breaks"></textarea>
+                        <label for="newWords">Words to highlight</label>
+                        <textarea id="newWords" placeholder="Enter words separated by commas or line breaks" aria-describedby="words-help" required></textarea>
+                        <span id="words-help" class="sr-only">Enter multiple words separated by commas, spaces, or line breaks</span>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="cancelWordBtn" class="btn-secondary">
-                        <i class="fas fa-times"></i>
+                    <button id="cancelWordBtn" class="btn-secondary" aria-label="Cancel adding words">
+                        <i class="fas fa-times" aria-hidden="true"></i>
                         Cancel
                     </button>
-                    <button id="addWordsBtn" class="btn-primary">
-                        <i class="fas fa-plus"></i>
+                    <button id="addWordsBtn" class="btn-primary" aria-label="Add words to list">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
                         Add Words
                     </button>
                 </div>
@@ -190,7 +205,7 @@
         </div>
 
         <!-- Edit Styles Modal -->
-        <div id="editStylesModal" class="modal">
+        <div id="editStylesModal" class="modal" aria-hidden="true">
             <div class="modal-content modal-large">
                 <div class="modal-header">
                     <h4>Customize Highlighting Styles</h4>
@@ -394,7 +409,7 @@
         </div>
 
         <!-- Advanced Settings Modal -->
-        <div id="advancedSettingsModal" class="modal">
+        <div id="advancedSettingsModal" class="modal" aria-hidden="true">
             <div class="modal-content modal-large">
                 <div class="modal-header">
                     <h4>Advanced Settings</h4>

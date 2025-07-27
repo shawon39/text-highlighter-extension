@@ -85,7 +85,9 @@ class ModalManager {
     }
 
     showAddListModal() {
-        document.getElementById('addListModal').style.display = 'block';
+        const modal = document.getElementById('addListModal');
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
         document.getElementById('newListName').value = '';
         
         // Reset to default style selection
@@ -97,26 +99,64 @@ class ModalManager {
     }
 
     hideAddListModal() {
-        document.getElementById('addListModal').style.display = 'none';
+        const modal = document.getElementById('addListModal');
+        
+        // Move focus away from modal before hiding it
+        if (modal.contains(document.activeElement)) {
+            document.getElementById('addListBtn').focus();
+        }
+        
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
     }
 
     showAddWordModal(listId) {
         this.currentListId = listId;
         document.getElementById('newWords').value = '';
-        document.getElementById('addWordModal').style.display = 'block';
+        const modal = document.getElementById('addWordModal');
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
         
         // Focus on textarea
         setTimeout(() => document.getElementById('newWords').focus(), 100);
     }
 
     hideAddWordModal() {
-        document.getElementById('addWordModal').style.display = 'none';
+        const modal = document.getElementById('addWordModal');
+        
+        // Move focus away from modal before hiding it
+        if (modal.contains(document.activeElement)) {
+            // Try to focus on the "Add Words" button for the current list
+            const addWordButton = document.querySelector(`[data-list-id="${this.currentListId}"] .add-words-btn`);
+            if (addWordButton) {
+                addWordButton.focus();
+            } else {
+                // Fallback to main toggle if specific button not found
+                document.getElementById('enableHighlighting').focus();
+            }
+        }
+        
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
         this.currentListId = null;
     }
 
     hideModals() {
-        document.getElementById('addListModal').style.display = 'none';
-        document.getElementById('addWordModal').style.display = 'none';
+        const addListModal = document.getElementById('addListModal');
+        const addWordModal = document.getElementById('addWordModal');
+        
+        // Move focus away from any modal before hiding them
+        const activeElement = document.activeElement;
+        if (addListModal.contains(activeElement) || addWordModal.contains(activeElement)) {
+            document.getElementById('enableHighlighting').focus();
+        }
+        
+        addListModal.style.display = 'none';
+        addListModal.setAttribute('aria-hidden', 'true');
+        
+        addWordModal.style.display = 'none';
+        addWordModal.setAttribute('aria-hidden', 'true');
+        
         this.styleManager.hideEditStylesModal();
         this.currentListId = null;
     }

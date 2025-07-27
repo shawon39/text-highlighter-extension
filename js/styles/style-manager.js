@@ -372,7 +372,9 @@ class StyleManager {
         
         this.currentEditStylesListId = 'new'; // Special ID for new list
         this.loadStylesIntoModal(presetStyles);
-        document.getElementById('editStylesModal').style.display = 'block';
+        const modal = document.getElementById('editStylesModal');
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
         this.updateStylePreview();
         this.bindStyleInputEvents();
     }
@@ -405,14 +407,24 @@ class StyleManager {
             }
         });
         
-        document.getElementById('editStylesModal').style.display = 'block';
+        const modal = document.getElementById('editStylesModal');
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
         
         // Set up real-time preview updates
         this.bindStyleInputEvents();
     }
 
     hideEditStylesModal() {
-        document.getElementById('editStylesModal').style.display = 'none';
+        const modal = document.getElementById('editStylesModal');
+        
+        // Move focus away from modal before hiding it
+        if (modal.contains(document.activeElement)) {
+            document.getElementById('enableHighlighting').focus();
+        }
+        
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
         this.currentEditStylesListId = null;
         this.unbindStyleInputEvents();
     }

@@ -30,7 +30,7 @@
 }
 
 .settings-section-content {
-    padding: 16px;
+    padding: 20px;
 }
 
 /* Radio Options for Website Rules */
@@ -45,10 +45,10 @@
 .radio-option {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 16px;
     cursor: pointer;
-    padding: 12px;
-    border-radius: 6px;
+    padding: 16px;
+    border-radius: 8px;
     transition: background-color 0.2s ease;
 }
 
@@ -117,8 +117,8 @@
 
 .website-input-group {
     display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .website-input-group input {
@@ -185,10 +185,10 @@
 .setting-toggle-advanced {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 16px;
     cursor: pointer;
-    padding: 8px;
-    border-radius: 6px;
+    padding: 12px;
+    border-radius: 8px;
     transition: background-color 0.2s ease;
 }
 
@@ -318,11 +318,11 @@
 .shortcut-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 16px;
-    padding: 12px;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 16px;
     background: #f8f9fa;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
 .shortcut-item {
@@ -351,33 +351,7 @@
 .data-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 16px;
 }
 
 /* Auto-save indicator styles are handled inline for better control */
-
-/* Responsive adjustments for advanced settings */
-@media (max-width: 768px) {
-    .website-list-container {
-        margin-left: 16px;
-        padding: 12px;
-    }
-    
-    .website-input-group {
-        flex-direction: column;
-    }
-    
-    .data-actions {
-        flex-direction: column;
-    }
-    
-    .data-actions button {
-        width: 100%;
-    }
-    
-    .shortcut-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-    }
-}
