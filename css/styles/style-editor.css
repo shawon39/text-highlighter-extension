@@ -215,37 +215,93 @@
     font-weight: 500;
 }
 
-/* Padding Controls */
+/* Padding Controls - Minimal Box Model Design */
 .padding-controls {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .padding-input-group {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr auto;
-    gap: 4px;
+    grid-template-columns: 56px 56px 56px;
+    grid-template-rows: 32px 32px 32px;
+    grid-template-areas: 
+        ". top ."
+        "left center right"
+        ". bottom .";
+    gap: 6px;
     align-items: center;
+    justify-items: center;
+    position: relative;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    width: fit-content;
+    margin: 0 auto;
 }
 
 .padding-input {
-    width: 100%;
-    padding: 4px 6px;
+    width: 52px;
+    height: 28px;
+    padding: 4px 10px;
     border: 1px solid #dee2e6;
-    border-radius: 3px;
-    font-size: 11px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
     text-align: center;
+    background: white;
+    transition: all 0.2s ease;
 }
 
-.padding-labels {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 4px;
+.padding-input:focus {
+    border-color: #6b46c1;
+    outline: none;
+    box-shadow: 0 0 0 1px rgba(107, 70, 193, 0.2);
+}
+
+/* Position inputs around center */
+#editPaddingTop {
+    grid-area: top;
+}
+
+#editPaddingRight {
+    grid-area: right;
+}
+
+#editPaddingBottom {
+    grid-area: bottom;
+}
+
+#editPaddingLeft {
+    grid-area: left;
+}
+
+/* Center indicator */
+.padding-input-group::after {
+    content: "";
+    grid-area: center;
+    width: 28px;
+    height: 20px;
+    background: #6b46c1;
+    border-radius: 3px;
+    opacity: 0.8;
+}
+
+/* Unit indicator */
+.padding-input-group .input-unit {
+    grid-column: 1 / -1;
+    grid-row: 4;
     font-size: 9px;
     color: #6c757d;
     text-align: center;
-    margin-top: 4px;
+    margin-top: 2px;
+}
+
+/* Remove old labels */
+.padding-labels {
+    display: none;
 }
 
 /* Radius Input */
@@ -378,16 +434,21 @@
     }
     
     .padding-input-group {
-        grid-template-columns: 1fr 1fr auto;
-        grid-template-areas: 
-            "top right unit"
-            "bottom left unit";
+        grid-template-columns: 50px 50px 50px;
+        grid-template-rows: 28px 28px 28px;
+        gap: 4px;
+        padding: 10px;
     }
     
-    .padding-labels {
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas:
-            "top right"
-            "bottom left";
+    .padding-input-group::after {
+        width: 24px;
+        height: 16px;
+    }
+    
+    .padding-input {
+        width: 46px;
+        height: 24px;
+        font-size: 11px;
+        padding: 3px 8px;
     }
 }
